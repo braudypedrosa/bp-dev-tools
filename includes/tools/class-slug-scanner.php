@@ -282,9 +282,13 @@ class BP_Dev_Tools_Slug_Scanner {
 		}
 
 		// Search for similar slugs using multiple strategies.
-		// 1. Starts with the slug
-		// 2. Contains the slug
+		// 1. Starts with the slug or slug starts with post_name
+		// 2. Contains the slug or slug contains post_name
 		// 3. Similar words (replacing hyphens/underscores)
+		// 4. Fuzzy match (character-by-character with wildcards)
+		
+		// Create a fuzzy pattern by inserting wildcards between characters for very fuzzy matching.
+		$fuzzy_pattern = '%' . implode( '%', str_split( substr( $slug, 0, min( 10, strlen( $slug ) ) ) ) ) . '%';
 		
 		$similar_posts = $wpdb->get_results(
 			$wpdb->prepare(
@@ -297,33 +301,40 @@ class BP_Dev_Tools_Slug_Scanner {
 					post_name LIKE %s
 					OR post_name LIKE %s
 					OR post_name LIKE %s
+					OR %s LIKE CONCAT('%%', post_name, '%%')
+					OR post_name LIKE %s
 				)
 				ORDER BY 
 					CASE 
 						WHEN post_name LIKE %s THEN 1
 						WHEN post_name LIKE %s THEN 2
-						ELSE 3
+						WHEN %s LIKE CONCAT('%%', post_name, '%%') THEN 3
+						ELSE 4
 					END,
+					CHAR_LENGTH(post_name),
 					post_date DESC
-				LIMIT 5",
+				LIMIT 10",
 				$slug . '%',           // Starts with
 				'%' . $slug . '%',     // Contains
 				'%' . str_replace( array( '-', '_' ), '%', $slug ) . '%', // Word parts
+				$slug,                 // Slug contains the post_name
+				$fuzzy_pattern,        // Very fuzzy character-by-character
 				$slug . '%',           // For sorting: prioritize starts with
-				'%' . $slug . '%'      // For sorting: then contains
+				'%' . $slug . '%',     // For sorting: then contains
+				$slug                  // For sorting: then slug contains post_name
 			)
 		);
 
 		$formatted_similar = array();
 		foreach ( $similar_posts as $post ) {
-			// Calculate similarity score (simple approach).
-			$similarity = 0;
-			if ( strpos( $post->post_name, $slug ) === 0 ) {
-				$similarity = 90; // Starts with
-			} elseif ( strpos( $post->post_name, $slug ) !== false ) {
-				$similarity = 70; // Contains
-			} else {
-				$similarity = 50; // Partial match
+			// Calculate similarity percentage using Levenshtein distance.
+			$distance = levenshtein( strtolower( $slug ), strtolower( $post->post_name ) );
+			$max_len = max( strlen( $slug ), strlen( $post->post_name ) );
+			$similarity = $max_len > 0 ? round( ( 1 - $distance / $max_len ) * 100 ) : 0;
+			
+			// Ensure similarity is at least somewhat relevant (> 50%).
+			if ( $similarity < 50 ) {
+				continue;
 			}
 
 			$formatted_similar[] = array(
@@ -337,7 +348,13 @@ class BP_Dev_Tools_Slug_Scanner {
 				'view_url'   => get_permalink( $post->ID ),
 			);
 		}
-
-		return $formatted_similar;
+		
+		// Sort by similarity descending.
+		usort( $formatted_similar, function( $a, $b ) {
+			return $b['similarity'] - $a['similarity'];
+		});
+		
+		// Return top 5 most similar.
+		return array_slice( $formatted_similar, 0, 5 );
 	}
 }
