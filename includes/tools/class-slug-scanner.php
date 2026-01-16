@@ -122,6 +122,18 @@ class BP_Dev_Tools_Slug_Scanner {
 
 			// Check if slug exists.
 			$post = $this->find_post_by_slug( $slug, $post_type );
+			
+			// If not found by slug, try using url_to_postid() for custom permalinks.
+			if ( ! $post ) {
+				$post_id = url_to_postid( $url );
+				if ( $post_id > 0 ) {
+					$post = get_post( $post_id );
+					// Verify post type matches if specified.
+					if ( $post && ! empty( $post_type ) && $post->post_type !== $post_type ) {
+						$post = null;
+					}
+				}
+			}
 
 			if ( $post ) {
 				$found[] = array(
