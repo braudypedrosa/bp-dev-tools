@@ -369,7 +369,7 @@ final class BP_Dev_Tools {
 	 */
 	private function init_update_checker() {
 		// Load Composer autoloader if available.
-		$autoloader = BP_DEV_TOOLS_PATH . 'vendor/autoload.php';
+		$autoloader = BP_DEV_TOOLS_PLUGIN_DIR . 'vendor/autoload.php';
 		if ( file_exists( $autoloader ) ) {
 			require_once $autoloader;
 		}
