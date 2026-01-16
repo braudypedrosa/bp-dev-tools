@@ -1,9 +1,11 @@
 # Dependencies
 node_modules/
-vendor/
+# vendor/ - Keep vendor for plugin distribution (contains Update Checker)
 
 # Build artifacts (keep compiled assets for plugin distribution)
 # dist/ - commented out so compiled assets are committed
+build/
+releases/
 
 # Lock files (keep package-lock for reproducible builds)
 composer.lock

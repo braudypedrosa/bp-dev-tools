@@ -193,6 +193,8 @@ class BP_Dev_Tools_Admin {
 				'ajaxUrl'   => admin_url( 'admin-ajax.php' ),
 				'nonce'     => wp_create_nonce( 'bp_dev_tools_admin_nonce' ),
 				'pageUrl'   => admin_url( 'admin.php?page=bp-dev-tools' ),
+				'adminUrl'  => admin_url(),
+				'version'   => BP_DEV_TOOLS_VERSION,
 				'strings'   => array(
 					'saved'         => __( 'Settings saved successfully!', 'bp-dev-tools' ),
 					'error'         => __( 'An error occurred. Please try again.', 'bp-dev-tools' ),
@@ -271,6 +273,9 @@ class BP_Dev_Tools_Admin {
 
 		// Register AJAX handler for tool toggle.
 		add_action( 'wp_ajax_bp_dev_tools_toggle_tool', array( $this, 'ajax_toggle_tool' ) );
+		
+		// Register AJAX handler for checking updates.
+		add_action( 'wp_ajax_bp_dev_tools_check_updates', array( $this, 'ajax_check_updates' ) );
 	}
 
 	/**
@@ -318,6 +323,50 @@ class BP_Dev_Tools_Admin {
 		wp_send_json_success( array(
 			'message' => $enabled ? __( 'Tool enabled successfully.', 'bp-dev-tools' ) : __( 'Tool disabled successfully.', 'bp-dev-tools' ),
 			'enabled_count' => count( $enabled_tools ),
+		) );
+	}
+
+	/**
+	 * AJAX handler for checking plugin updates.
+	 *
+	 * Triggers WordPress to check for updates and returns the latest available version.
+	 *
+	 * @since 1.0.0
+	 * @return void
+	 */
+	public function ajax_check_updates() {
+		// Verify nonce.
+		check_ajax_referer( 'bp_dev_tools_admin_nonce', 'nonce' );
+
+		// Check capabilities.
+		if ( ! current_user_can( 'manage_options' ) ) {
+			wp_send_json_error( array( 'message' => __( 'Permission denied.', 'bp-dev-tools' ) ) );
+		}
+
+		// Force WordPress to check for updates.
+		delete_site_transient( 'update_plugins' );
+		wp_update_plugins();
+
+		// Get update information.
+		$update_plugins = get_site_transient( 'update_plugins' );
+		$plugin_slug = 'bp-dev-tools/bp-dev-tools.php';
+		
+		$update_available = false;
+		$latest_version = BP_DEV_TOOLS_VERSION;
+		$release_url = null;
+
+		if ( isset( $update_plugins->response[ $plugin_slug ] ) ) {
+			$update_info = $update_plugins->response[ $plugin_slug ];
+			$update_available = true;
+			$latest_version = $update_info->new_version;
+			$release_url = isset( $update_info->url ) ? $update_info->url : null;
+		}
+
+		wp_send_json_success( array(
+			'update_available' => $update_available,
+			'current_version' => BP_DEV_TOOLS_VERSION,
+			'latest_version' => $latest_version,
+			'release_url' => $release_url,
 		) );
 	}
 

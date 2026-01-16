@@ -34,6 +34,7 @@ import AppHeader from '@components/AppHeader.vue'
 import Sidebar from '@components/Sidebar.vue'
 import ToastContainer from '@components/ToastContainer.vue'
 import GeneralSettings from '@views/GeneralSettings.vue'
+import CheckUpdates from '@views/CheckUpdates.vue'
 import ToolPage from '@views/ToolPage.vue'
 
 const store = useToolsStore()
@@ -57,6 +58,9 @@ const enabledToolsCount = computed(() => enabledTools.value.length)
 const currentView = computed(() => {
   if (currentPage.value === 'general') {
     return GeneralSettings
+  }
+  if (currentPage.value === 'check-updates') {
+    return CheckUpdates
   }
   return ToolPage
 })

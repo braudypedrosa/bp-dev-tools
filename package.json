@@ -6,7 +6,8 @@
   "scripts": {
     "build": "vite build",
     "watch": "vite build --watch",
-    "start": "vite build --watch"
+    "start": "vite build --watch",
+    "package": "sh package-plugin.sh"
   },
   "keywords": [
     "wordpress",

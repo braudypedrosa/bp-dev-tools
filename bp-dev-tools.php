@@ -129,6 +129,7 @@ final class BP_Dev_Tools {
 
 		$this->includes();
 		$this->init_hooks();
+		$this->init_update_checker();
 	}
 
 	/**
@@ -355,6 +356,35 @@ final class BP_Dev_Tools {
 			false,
 			dirname( BP_DEV_TOOLS_PLUGIN_BASENAME ) . '/languages'
 		);
+	}
+
+	/**
+	 * Initialize the plugin update checker.
+	 *
+	 * Sets up automatic updates from GitHub releases.
+	 * Checks for updates every 12 hours and displays update notifications.
+	 *
+	 * @since 1.0.0
+	 * @return void
+	 */
+	private function init_update_checker() {
+		// Load Composer autoloader if available.
+		$autoloader = BP_DEV_TOOLS_PATH . 'vendor/autoload.php';
+		if ( file_exists( $autoloader ) ) {
+			require_once $autoloader;
+		}
+
+		// Only initialize if the library is available.
+		if ( class_exists( 'YahnisElsts\PluginUpdateChecker\v5\PucFactory' ) ) {
+			$update_checker = \YahnisElsts\PluginUpdateChecker\v5\PucFactory::buildUpdateChecker(
+				'https://github.com/braudypedrosa/bp-dev-tools',
+				BP_DEV_TOOLS_PLUGIN_FILE,
+				'bp-dev-tools'
+			);
+
+			// Use GitHub releases for updates.
+			$update_checker->getVcsApi()->enableReleaseAssets();
+		}
 	}
 
 	/**

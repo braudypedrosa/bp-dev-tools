@@ -16,6 +16,21 @@
         General Settings
       </a>
 
+      <!-- Check Updates -->
+      <a
+        href="#"
+        @click.prevent="$emit('navigate', 'check-updates')"
+        :class="[
+          'flex items-center px-6 py-3 text-sm font-medium transition-all border-l-3',
+          currentPage === 'check-updates'
+            ? 'bg-blue-50 text-blue-700 border-blue-700 font-semibold'
+            : 'text-gray-500 hover:bg-gray-50 hover:text-gray-700 border-transparent'
+        ]"
+      >
+        <span class="dashicons dashicons-update mr-3 text-xl"></span>
+        Check Updates
+      </a>
+
       <!-- Enabled Tools Section -->
       <template v-if="enabledTools.length > 0">
         <div class="pt-6 pb-2 px-6">
