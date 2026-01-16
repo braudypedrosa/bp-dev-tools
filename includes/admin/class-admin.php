@@ -276,6 +276,9 @@ class BP_Dev_Tools_Admin {
 		
 		// Register AJAX handler for checking updates.
 		add_action( 'wp_ajax_bp_dev_tools_check_updates', array( $this, 'ajax_check_updates' ) );
+		
+		// Register AJAX handler for getting update status.
+		add_action( 'wp_ajax_bp_dev_tools_get_update_status', array( $this, 'ajax_get_update_status' ) );
 	}
 
 	/**
@@ -358,6 +361,47 @@ class BP_Dev_Tools_Admin {
 		sleep( 2 );
 
 		// Get update information.
+		$update_plugins = get_site_transient( 'update_plugins' );
+		$plugin_slug = 'bp-dev-tools/bp-dev-tools.php';
+		
+		$update_available = false;
+		$latest_version = BP_DEV_TOOLS_VERSION;
+		$release_url = null;
+
+		if ( isset( $update_plugins->response[ $plugin_slug ] ) ) {
+			$update_info = $update_plugins->response[ $plugin_slug ];
+			$update_available = true;
+			$latest_version = $update_info->new_version;
+			$release_url = isset( $update_info->url ) ? $update_info->url : null;
+		}
+
+		wp_send_json_success( array(
+			'update_available' => $update_available,
+			'current_version' => BP_DEV_TOOLS_VERSION,
+			'latest_version' => $latest_version,
+			'release_url' => $release_url,
+		) );
+	}
+
+	/**
+	 * AJAX handler for getting current update status.
+	 *
+	 * Returns the current update status without forcing a new check.
+	 * This is used on page load to show persistent update notifications.
+	 *
+	 * @since 1.0.3
+	 * @return void
+	 */
+	public function ajax_get_update_status() {
+		// Verify nonce.
+		check_ajax_referer( 'bp_dev_tools_admin_nonce', 'nonce' );
+
+		// Check capabilities.
+		if ( ! current_user_can( 'manage_options' ) ) {
+			wp_send_json_error( array( 'message' => __( 'Permission denied.', 'bp-dev-tools' ) ) );
+		}
+
+		// Get update information from transient.
 		$update_plugins = get_site_transient( 'update_plugins' );
 		$plugin_slug = 'bp-dev-tools/bp-dev-tools.php';
 		

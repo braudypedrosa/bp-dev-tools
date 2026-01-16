@@ -53,7 +53,7 @@
         <button
           @click="checkForUpdates"
           :disabled="checking"
-          class="px-4 py-2 bg-gradient-to-r from-primary-start to-primary-end text-white font-semibold rounded-lg transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed hover:shadow-lg disabled:hover:shadow-none flex items-center gap-2"
+          class="px-4 py-2 bg-gradient-to-r from-primary-start to-primary-end text-white font-semibold rounded-lg transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed hover:shadow-lg hover:text-white active:text-white disabled:hover:shadow-none flex items-center gap-2"
         >
           <ArrowPathIcon v-if="checking" class="w-5 h-5 animate-spin" />
           <ArrowDownTrayIcon v-else class="w-5 h-5" />
@@ -93,7 +93,7 @@
             <div class="flex gap-3">
               <a
                 :href="adminUrl + 'plugins.php'"
-                class="px-4 py-2 bg-blue-600 text-white font-semibold rounded-lg hover:bg-blue-700 transition-colors inline-flex items-center gap-2"
+                class="px-4 py-2 bg-blue-600 text-white font-semibold rounded-lg hover:bg-blue-700 hover:text-white active:text-white transition-colors inline-flex items-center gap-2"
               >
                 <ArrowPathIcon class="w-5 h-5" />
                 Go to Plugins Page
@@ -102,7 +102,7 @@
                 v-if="releaseUrl"
                 :href="releaseUrl"
                 target="_blank"
-                class="px-4 py-2 bg-gray-600 text-white font-semibold rounded-lg hover:bg-gray-700 transition-colors inline-flex items-center gap-2"
+                class="px-4 py-2 bg-gray-600 text-white font-semibold rounded-lg hover:bg-gray-700 hover:text-white active:text-white transition-colors inline-flex items-center gap-2"
               >
                 <ArrowTopRightOnSquareIcon class="w-5 h-5" />
                 View Release Notes
@@ -179,6 +179,35 @@ const releaseUrl = ref(null)
 const repositoryUrl = ref('https://github.com/braudypedrosa/bp-dev-tools')
 const adminUrl = ref(window.bpDevToolsAdmin?.adminUrl || '/wp-admin/')
 
+// Get current update status (without forcing a new check)
+const getUpdateStatus = async () => {
+  try {
+    const response = await fetch(
+      window.bpDevToolsAdmin.ajaxUrl,
+      {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/x-www-form-urlencoded',
+        },
+        body: new URLSearchParams({
+          action: 'bp_dev_tools_get_update_status',
+          nonce: window.bpDevToolsAdmin.nonce
+        })
+      }
+    )
+
+    const data = await response.json()
+    
+    if (data.success) {
+      updateAvailable.value = data.data.update_available || false
+      latestVersion.value = data.data.latest_version || currentVersion.value
+      releaseUrl.value = data.data.release_url || null
+    }
+  } catch (error) {
+    console.error('Failed to get update status:', error)
+  }
+}
+
 // Check for updates
 const checkForUpdates = async () => {
   checking.value = true
@@ -214,10 +243,9 @@ const checkForUpdates = async () => {
   }
 }
 
-// Load on mount
+// Load on mount - check if an update is already detected
 onMounted(() => {
-  // Optionally check on page load
-  // checkForUpdates()
+  getUpdateStatus()
 })
 </script>
 

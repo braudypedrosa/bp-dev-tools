@@ -3,7 +3,7 @@
  * Plugin Name: BP Dev Tools
  * Plugin URI: https://github.com/braudyp/bp-dev-tools
  * Description: A comprehensive directory of developer tools with an extensible settings interface for managing various development utilities.
- * Version: 1.0.3
+ * Version: 1.0.2
  * Author: Braudy Pedrosa
  * Author URI: https://braudyp.dev/
  * Text Domain: bp-dev-tools
@@ -41,7 +41,7 @@ final class BP_Dev_Tools {
 	 *
 	 * @var string
 	 */
-	const VERSION = '1.0.3';
+	const VERSION = '1.0.2';
 
 	/**
 	 * Minimum PHP version required.
@@ -384,20 +384,53 @@ final class BP_Dev_Tools {
 			return;
 		}
 
-		try {
-			$update_checker = \YahnisElsts\PluginUpdateChecker\v5\PucFactory::buildUpdateChecker(
-				'https://github.com/braudypedrosa/bp-dev-tools',
-				BP_DEV_TOOLS_PLUGIN_FILE,
-				'bp-dev-tools'
-			);
+	try {
+		$update_checker = \YahnisElsts\PluginUpdateChecker\v5\PucFactory::buildUpdateChecker(
+			'https://github.com/braudypedrosa/bp-dev-tools',
+			BP_DEV_TOOLS_PLUGIN_FILE,
+			'bp-dev-tools'
+		);
 
-			// Use GitHub releases for updates.
-			$update_checker->getVcsApi()->enableReleaseAssets();
+		// Get the GitHub API instance and enable release assets.
+		$update_checker->getVcsApi()->enableReleaseAssets();
+		
+		// Force the library to use the latest release instead of the default branch.
+		add_filter( 'puc_request_info_result-bp-dev-tools', function( $plugin_info, $result ) {
+			error_log( 'BP Dev Tools: Filter called - checking for updates' );
 			
-			error_log( 'BP Dev Tools: Update checker initialized successfully' );
-		} catch ( Exception $e ) {
-			error_log( 'BP Dev Tools: Update checker failed - ' . $e->getMessage() );
-		}
+			// If result is null, fetch from GitHub API directly.
+			if ( ! $result ) {
+				$response = wp_remote_get( 'https://api.github.com/repos/braudypedrosa/bp-dev-tools/releases/latest' );
+				if ( ! is_wp_error( $response ) ) {
+					$result = json_decode( wp_remote_retrieve_body( $response ) );
+				}
+			}
+			
+			// Extract version from tag (remove 'v' prefix).
+			if ( isset( $result->tag_name ) ) {
+				$version = ltrim( $result->tag_name, 'v' );
+				$plugin_info->version = $version;
+				error_log( 'BP Dev Tools: Found version - ' . $version );
+			}
+			
+			// Find and set the download URL from release assets.
+			if ( isset( $result->assets ) && is_array( $result->assets ) ) {
+				foreach ( $result->assets as $asset ) {
+					if ( isset( $asset->name ) && strpos( $asset->name, 'bp-dev-tools-v' ) !== false && strpos( $asset->name, '.zip' ) !== false ) {
+						$plugin_info->download_url = $asset->browser_download_url;
+						error_log( 'BP Dev Tools: Found release asset - ' . $asset->name . ' at ' . $asset->browser_download_url );
+						break;
+					}
+				}
+			}
+			
+			return $plugin_info;
+		}, 10, 2 );
+		
+		error_log( 'BP Dev Tools: Update checker initialized successfully' );
+	} catch ( Exception $e ) {
+		error_log( 'BP Dev Tools: Update checker failed - ' . $e->getMessage() );
+	}
 	}
 
 	/**
