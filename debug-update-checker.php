@@ -126,5 +126,32 @@ if ($update_plugins && isset($update_plugins->response['bp-dev-tools/bp-dev-tool
 }
 echo '</pre>';
 
+// Check WP-Cron schedule
+echo '<h2>6. WP-Cron Schedule</h2>';
+echo '<pre>';
+$cron_array = _get_cron_array();
+$next_update_check = wp_next_scheduled('wp_update_plugins');
+if ($next_update_check) {
+    echo "Next automatic update check: " . date('Y-m-d H:i:s', $next_update_check) . "\n";
+    echo "Time until next check: " . human_time_diff($next_update_check) . "\n\n";
+} else {
+    echo "❌ No update check scheduled!\n\n";
+}
+
+// Check if WP-Cron is working
+if (defined('DISABLE_WP_CRON') && DISABLE_WP_CRON) {
+    echo "⚠️  WP_CRON is DISABLED in wp-config.php\n";
+    echo "You'll need to set up a system cron job for automatic updates.\n";
+} else {
+    echo "✓ WP_CRON is enabled (automatic updates will work)\n";
+}
+
+// Check last update check
+if (isset($update_plugins->last_checked)) {
+    echo "\nLast update check: " . date('Y-m-d H:i:s', $update_plugins->last_checked) . "\n";
+    echo "Time since last check: " . human_time_diff($update_plugins->last_checked) . " ago\n";
+}
+echo '</pre>';
+
 echo '<hr>';
 echo '<p><a href="' . admin_url('admin.php?page=bp-dev-tools&tab=check-updates') . '">← Back to Check Updates</a></p>';
