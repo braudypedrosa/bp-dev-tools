@@ -1,0 +1,51 @@
+/**
+ * BP Dev Tools - Main Application Styles
+ * 
+ * Tailwind CSS with custom utilities for the admin interface.
+ * 
+ * @package BP_Dev_Tools
+ */
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Override WordPress default admin styles */
+.wrap #bp-dev-tools-app {
+  margin-left: -20px;
+  margin-right: -20px;
+  margin-top: -10px;
+}
+
+/* Custom component classes */
+@layer components {
+  /* Tooltip styling */
+  .bp-tooltip {
+    @apply fixed bg-gray-900 text-white text-sm px-3 py-2 rounded shadow-lg z-50 pointer-events-none;
+  }
+}
+
+/* Vue transition classes */
+.fade-enter-active,
+.fade-leave-active {
+  transition: opacity 0.3s ease;
+}
+
+.fade-enter-from,
+.fade-leave-to {
+  opacity: 0;
+}
+
+.slide-fade-enter-active {
+  transition: all 0.3s ease-out;
+}
+
+.slide-fade-leave-active {
+  transition: all 0.2s cubic-bezier(1, 0.5, 0.8, 1);
+}
+
+.slide-fade-enter-from,
+.slide-fade-leave-to {
+  transform: translateX(20px);
+  opacity: 0;
+}

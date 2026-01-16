@@ -1,0 +1,173 @@
+# EditorConfig helps maintain consistent coding styles across different editors and IDEs.
+# More information: https://editorconfig.org
+#
+# BEGINNER'S NOTE:
+# - EditorConfig is supported by most modern code editors
+# - It automatically configures your editor's settings
+# - Helps teams maintain consistent code formatting
+# - No need to manually configure tabs, line endings, etc.
+#
+# Common Settings Explained:
+# - indent_style: Use tabs or spaces for indentation
+# - indent_size: Number of spaces per indent level
+# - end_of_line: Line ending format (lf, cr, crlf)
+# - charset: Character encoding
+# - trim_trailing_whitespace: Remove trailing spaces
+# - insert_final_newline: Add newline at end of file
+
+# Top-most EditorConfig file (stop searching in parent directories)
+root = true
+
+# =============================================================================
+# Default Settings for All Files
+# =============================================================================
+
+[*]
+# Character encoding
+charset = utf-8
+
+# Line ending style (Unix-style)
+# lf = Line Feed (\n) - Used by Unix/Linux/Mac
+# crlf = Carriage Return + Line Feed (\r\n) - Used by Windows
+end_of_line = lf
+
+# Add a newline at the end of files
+insert_final_newline = true
+
+# Remove trailing whitespace
+trim_trailing_whitespace = true
+
+# Default indentation: tabs
+indent_style = tab
+indent_size = 4
+
+# =============================================================================
+# PHP Files (WordPress Standards)
+# =============================================================================
+
+[*.php]
+# WordPress uses tabs for indentation
+indent_style = tab
+indent_size = 4
+
+# Don't trim trailing whitespace in PHP files
+# (some developers prefer to keep it for certain formatting)
+trim_trailing_whitespace = true
+
+# =============================================================================
+# JavaScript Files
+# =============================================================================
+
+[*.js]
+# Use tabs for JavaScript (WordPress standard)
+indent_style = tab
+indent_size = 2
+
+# =============================================================================
+# JSON Files
+# =============================================================================
+
+[*.json]
+# JSON typically uses spaces
+indent_style = space
+indent_size = 2
+
+# =============================================================================
+# YAML Files
+# =============================================================================
+
+[*.{yml,yaml}]
+# YAML requires spaces (tabs are not allowed)
+indent_style = space
+indent_size = 2
+
+# =============================================================================
+# CSS and SCSS Files
+# =============================================================================
+
+[*.{css,scss}]
+# Use tabs for styles
+indent_style = tab
+indent_size = 2
+
+# =============================================================================
+# HTML and Template Files
+# =============================================================================
+
+[*.{html,htm}]
+indent_style = tab
+indent_size = 4
+
+# =============================================================================
+# Markdown Files
+# =============================================================================
+
+[*.md]
+# Don't trim trailing whitespace in Markdown
+# (two spaces at end of line creates a line break)
+trim_trailing_whitespace = false
+
+# Use spaces for Markdown
+indent_style = space
+indent_size = 2
+
+# =============================================================================
+# XML Files
+# =============================================================================
+
+[*.xml]
+indent_style = space
+indent_size = 2
+
+# =============================================================================
+# Shell Scripts
+# =============================================================================
+
+[*.sh]
+indent_style = space
+indent_size = 2
+end_of_line = lf
+
+# =============================================================================
+# Configuration Files
+# =============================================================================
+
+# package.json, composer.json, etc.
+[{package.json,composer.json}]
+indent_style = space
+indent_size = 2
+
+# .gitignore, .dockerignore, etc.
+[.{gitignore,dockerignore}]
+indent_style = space
+indent_size = 2
+
+# =============================================================================
+# Build Configuration Files
+# =============================================================================
+
+[{gulpfile.js,webpack.config.js,.babelrc}]
+indent_style = tab
+indent_size = 2
+
+# =============================================================================
+# WordPress Coding Standards Summary
+# =============================================================================
+#
+# PHP:
+# - Tabs for indentation
+# - Spaces for alignment
+# - Unix line endings (LF)
+# - UTF-8 encoding
+#
+# JavaScript:
+# - Tabs for indentation
+# - Unix line endings (LF)
+# - UTF-8 encoding
+#
+# CSS/SCSS:
+# - Tabs for indentation
+# - Unix line endings (LF)
+# - UTF-8 encoding
+#
+# =============================================================================

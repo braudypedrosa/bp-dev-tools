@@ -1,0 +1,40 @@
+{
+  "name": "bp-dev-tools",
+  "version": "1.0.0",
+  "description": "A comprehensive directory of developer tools with Vue 3 + Tailwind CSS",
+  "type": "module",
+  "scripts": {
+    "build": "vite build",
+    "watch": "vite build --watch",
+    "start": "vite build --watch"
+  },
+  "keywords": [
+    "wordpress",
+    "plugin",
+    "vue",
+    "tailwind",
+    "dev-tools"
+  ],
+  "author": "Braudy Pedrosa <https://braudyp.dev/>",
+  "license": "GPL-2.0-or-later",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/braudyp/bp-dev-tools"
+  },
+  "homepage": "https://github.com/braudyp/bp-dev-tools#readme",
+  "bugs": {
+    "url": "https://github.com/braudyp/bp-dev-tools/issues"
+  },
+  "dependencies": {
+    "vue": "^3.4.15",
+    "pinia": "^2.1.7",
+    "axios": "^1.6.5"
+  },
+  "devDependencies": {
+    "@vitejs/plugin-vue": "^5.0.3",
+    "vite": "^5.0.11",
+    "autoprefixer": "^10.4.17",
+    "postcss": "^8.4.33",
+    "tailwindcss": "^3.4.1"
+  }
+}
