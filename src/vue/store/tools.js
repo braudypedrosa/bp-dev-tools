@@ -41,6 +41,9 @@ export const useToolsStore = defineStore('tools', () => {
     loading.value = true
     error.value = null
 
+    // Debug logging
+    console.log('🔧 toggleTool called:', { toolId, enabled, type: typeof enabled })
+
     try {
       const response = await axios.post(
         window.bpDevToolsAdmin.ajaxUrl,
@@ -48,9 +51,11 @@ export const useToolsStore = defineStore('tools', () => {
           action: 'bp_dev_tools_toggle_tool',
           nonce: window.bpDevToolsAdmin.nonce,
           tool_id: toolId,
-          enabled: enabled ? 'true' : 'false'
+          enabled: enabled
         })
       )
+
+      console.log('📡 Server response:', response.data)
 
       if (response.data.success) {
         // Update local state
@@ -60,12 +65,13 @@ export const useToolsStore = defineStore('tools', () => {
         }
 
         // Show success notification
-        useToast().show(
-          enabled 
-            ? window.bpDevToolsAdmin.strings.toolEnabled 
-            : window.bpDevToolsAdmin.strings.toolDisabled,
-          'success'
-        )
+        const message = enabled 
+          ? window.bpDevToolsAdmin.strings.toolEnabled 
+          : window.bpDevToolsAdmin.strings.toolDisabled
+        
+        console.log('💬 Showing message:', { enabled, message })
+        
+        useToast().show(message, 'success')
 
         return true
       } else {
