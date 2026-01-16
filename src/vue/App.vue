@@ -77,6 +77,7 @@ const handleNavigation = (page) => {
 
 // Handle tool toggle
 const handleToolToggle = async (toolId, enabled) => {
+  console.log('⚡ App.vue handleToolToggle:', { toolId, enabled, type: typeof enabled })
   await store.toggleTool(toolId, enabled)
   
   // Reload page after short delay to update sidebar

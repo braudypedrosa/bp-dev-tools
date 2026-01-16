@@ -62,8 +62,10 @@ const emit = defineEmits(['toggle', 'navigate'])
 const loading = ref(false)
 
 const handleToggle = async (enabled) => {
+  console.log('🎯 ToolCard handleToggle:', { toolId: props.tool.id, enabled, type: typeof enabled })
   loading.value = true
-  await emit('toggle', props.tool.id, enabled)
+  emit('toggle', props.tool.id, enabled)
+  console.log('📤 ToolCard emitted toggle event')
   loading.value = false
 }
 </script>

@@ -12,7 +12,7 @@
         v-for="tool in tools"
         :key="tool.id"
         :tool="tool"
-        @toggle="$emit('tool-toggled', $event, arguments[1])"
+        @toggle="handleToggle"
         @navigate="$emit('navigate', $event)"
       />
     </div>
@@ -39,5 +39,10 @@ defineProps({
   }
 })
 
-defineEmits(['tool-toggled', 'navigate'])
+const emit = defineEmits(['tool-toggled', 'navigate'])
+
+const handleToggle = (toolId, enabled) => {
+  console.log('📋 GeneralSettings handleToggle:', { toolId, enabled })
+  emit('tool-toggled', toolId, enabled)
+}
 </script>
