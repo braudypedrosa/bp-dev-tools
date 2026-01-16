@@ -80,11 +80,9 @@ const handleToolToggle = async (toolId, enabled) => {
   console.log('⚡ App.vue handleToolToggle:', { toolId, enabled, type: typeof enabled })
   await store.toggleTool(toolId, enabled)
   
-  // Reload page after short delay to update sidebar
-  if (enabled || (!enabled && currentPage.value === toolId)) {
-    setTimeout(() => {
-      window.location.reload()
-    }, 1200)
+  // If disabling the currently viewed tool, navigate back to general settings
+  if (!enabled && currentPage.value === toolId) {
+    handleNavigation('general')
   }
 }
 </script>
