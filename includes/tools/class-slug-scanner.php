@@ -241,14 +241,17 @@ class BP_Dev_Tools_Slug_Scanner {
 		$args = array(
 			'name'           => $slug,
 			'posts_per_page' => 1,
-			'post_status'    => 'any',
+			'post_status'    => array( 'publish', 'draft', 'pending', 'private', 'future' ),
 		);
 
 		// Filter by post type if specified.
 		if ( ! empty( $post_type ) ) {
 			$args['post_type'] = $post_type;
 		} else {
-			$args['post_type'] = 'any';
+			// When no post type specified, search all public post types.
+			// Using 'any' doesn't always work reliably, so we explicitly list them.
+			$public_post_types = get_post_types( array( 'public' => true ) );
+			$args['post_type'] = ! empty( $public_post_types ) ? $public_post_types : 'any';
 		}
 
 		$posts = get_posts( $args );
