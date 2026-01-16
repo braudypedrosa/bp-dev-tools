@@ -3,7 +3,7 @@
  * Plugin Name: BP Dev Tools
  * Plugin URI: https://github.com/braudyp/bp-dev-tools
  * Description: A comprehensive directory of developer tools with an extensible settings interface for managing various development utilities.
- * Version: 1.0.2
+ * Version: 1.0.3
  * Author: Braudy Pedrosa
  * Author URI: https://braudyp.dev/
  * Text Domain: bp-dev-tools
@@ -41,7 +41,7 @@ final class BP_Dev_Tools {
 	 *
 	 * @var string
 	 */
-	const VERSION = '1.0.2';
+	const VERSION = '1.0.3';
 
 	/**
 	 * Minimum PHP version required.
@@ -370,12 +370,21 @@ final class BP_Dev_Tools {
 	private function init_update_checker() {
 		// Load Composer autoloader if available.
 		$autoloader = BP_DEV_TOOLS_PLUGIN_DIR . 'vendor/autoload.php';
-		if ( file_exists( $autoloader ) ) {
-			require_once $autoloader;
+		
+		if ( ! file_exists( $autoloader ) ) {
+			error_log( 'BP Dev Tools: Composer autoloader not found at ' . $autoloader );
+			return;
 		}
+		
+		require_once $autoloader;
 
 		// Only initialize if the library is available.
-		if ( class_exists( 'YahnisElsts\PluginUpdateChecker\v5\PucFactory' ) ) {
+		if ( ! class_exists( 'YahnisElsts\PluginUpdateChecker\v5\PucFactory' ) ) {
+			error_log( 'BP Dev Tools: PucFactory class not found' );
+			return;
+		}
+
+		try {
 			$update_checker = \YahnisElsts\PluginUpdateChecker\v5\PucFactory::buildUpdateChecker(
 				'https://github.com/braudypedrosa/bp-dev-tools',
 				BP_DEV_TOOLS_PLUGIN_FILE,
@@ -384,6 +393,10 @@ final class BP_Dev_Tools {
 
 			// Use GitHub releases for updates.
 			$update_checker->getVcsApi()->enableReleaseAssets();
+			
+			error_log( 'BP Dev Tools: Update checker initialized successfully' );
+		} catch ( Exception $e ) {
+			error_log( 'BP Dev Tools: Update checker failed - ' . $e->getMessage() );
 		}
 	}
 
