@@ -158,7 +158,7 @@
                   <button
                     @click="createPost(item.slug, 'post')"
                     :disabled="creatingPost[item.slug]"
-                    class="px-3 py-1 bg-green-600 text-white text-xs rounded hover:bg-green-700 transition-colors disabled:opacity-50"
+                    class="px-3 py-1 bg-green-600 text-white text-xs rounded hover:bg-green-700 hover:text-white active:text-white transition-colors disabled:opacity-50"
                   >
                     <span v-if="creatingPost[item.slug]">Creating...</span>
                     <span v-else>Create Post</span>
@@ -166,11 +166,58 @@
                   <button
                     @click="createPost(item.slug, 'page')"
                     :disabled="creatingPost[item.slug]"
-                    class="px-3 py-1 bg-blue-600 text-white text-xs rounded hover:bg-blue-700 transition-colors disabled:opacity-50"
+                    class="px-3 py-1 bg-blue-600 text-white text-xs rounded hover:bg-blue-700 hover:text-white active:text-white transition-colors disabled:opacity-50"
                   >
                     <span v-if="creatingPost[item.slug]">Creating...</span>
                     <span v-else>Create Page</span>
                   </button>
+                </div>
+              </div>
+              
+              <!-- Similar Slugs -->
+              <div v-if="item.similar && item.similar.length > 0" class="mt-3 pt-3 border-t border-red-300">
+                <p class="text-xs font-semibold text-yellow-800 mb-2 flex items-center gap-1">
+                  <InformationCircleIcon class="w-4 h-4" />
+                  Found {{ item.similar.length }} similar slug{{ item.similar.length !== 1 ? 's' : '' }}:
+                </p>
+                <div class="space-y-2">
+                  <div
+                    v-for="(similar, sIndex) in item.similar"
+                    :key="`similar-${index}-${sIndex}`"
+                    class="bg-white/70 rounded p-2 text-xs"
+                  >
+                    <div class="flex items-center justify-between gap-2">
+                      <div class="flex-1 min-w-0">
+                        <p class="font-mono text-gray-900 truncate">{{ similar.slug }}</p>
+                        <p class="text-gray-600 truncate">{{ similar.title }}</p>
+                        <p class="text-gray-500">
+                          <span class="capitalize">{{ similar.type }}</span>
+                          <span class="mx-1">•</span>
+                          <span class="capitalize">{{ similar.status }}</span>
+                          <span v-if="similar.similarity" class="mx-1">•</span>
+                          <span v-if="similar.similarity" class="text-yellow-700">{{ similar.similarity }}% match</span>
+                        </p>
+                      </div>
+                      <div class="flex gap-1 flex-shrink-0">
+                        <a
+                          :href="similar.edit_url"
+                          target="_blank"
+                          class="px-2 py-1 bg-blue-500 text-white rounded hover:bg-blue-600 hover:text-white active:text-white transition-colors text-xs"
+                          title="Edit"
+                        >
+                          Edit
+                        </a>
+                        <a
+                          :href="similar.view_url"
+                          target="_blank"
+                          class="px-2 py-1 bg-gray-500 text-white rounded hover:bg-gray-600 hover:text-white active:text-white transition-colors text-xs"
+                          title="View"
+                        >
+                          View
+                        </a>
+                      </div>
+                    </div>
+                  </div>
                 </div>
               </div>
             </div>
