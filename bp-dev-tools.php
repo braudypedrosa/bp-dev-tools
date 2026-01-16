@@ -3,7 +3,7 @@
  * Plugin Name: BP Dev Tools
  * Plugin URI: https://github.com/braudyp/bp-dev-tools
  * Description: A comprehensive directory of developer tools with an extensible settings interface for managing various development utilities.
- * Version: 1.0.0
+ * Version: 1.0.1
  * Author: Braudy Pedrosa
  * Author URI: https://braudyp.dev/
  * Text Domain: bp-dev-tools
@@ -41,7 +41,7 @@ final class BP_Dev_Tools {
 	 *
 	 * @var string
 	 */
-	const VERSION = '1.0.0';
+	const VERSION = '1.0.1';
 
 	/**
 	 * Minimum PHP version required.

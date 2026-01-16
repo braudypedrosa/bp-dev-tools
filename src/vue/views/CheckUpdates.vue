@@ -26,6 +26,10 @@
           <p class="font-semibold text-gray-900">BP Dev Tools</p>
         </div>
         <div class="bg-gray-50 rounded-lg p-4">
+          <p class="text-sm text-gray-600 mb-1">Author</p>
+          <p class="font-semibold text-gray-900">Braudy Pedrosa</p>
+        </div>
+        <div class="bg-gray-50 rounded-lg p-4">
           <p class="text-sm text-gray-600 mb-1">Repository</p>
           <a 
             :href="repositoryUrl" 
@@ -35,10 +39,6 @@
             GitHub
             <ArrowTopRightOnSquareIcon class="w-4 h-4" />
           </a>
-        </div>
-        <div class="bg-gray-50 rounded-lg p-4">
-          <p class="text-sm text-gray-600 mb-1">Update Method</p>
-          <p class="font-semibold text-gray-900">GitHub Releases</p>
         </div>
       </div>
     </div>
