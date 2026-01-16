@@ -48,7 +48,7 @@ export const useToolsStore = defineStore('tools', () => {
           action: 'bp_dev_tools_toggle_tool',
           nonce: window.bpDevToolsAdmin.nonce,
           tool_id: toolId,
-          enabled: enabled
+          enabled: enabled ? 'true' : 'false'
         })
       )
 
