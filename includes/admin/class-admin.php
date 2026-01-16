@@ -343,9 +343,19 @@ class BP_Dev_Tools_Admin {
 			wp_send_json_error( array( 'message' => __( 'Permission denied.', 'bp-dev-tools' ) ) );
 		}
 
-		// Force WordPress to check for updates.
+		// Clear all update caches to force fresh check.
 		delete_site_transient( 'update_plugins' );
+		delete_option( 'puc_external_updates_bp-dev-tools' );
+		
+		// Clear any PUC request info cache.
+		global $wpdb;
+		$wpdb->query( "DELETE FROM {$wpdb->options} WHERE option_name LIKE '%puc_request_info_result%bp-dev-tools%'" );
+		
+		// Trigger immediate check.
 		wp_update_plugins();
+		
+		// Give it a moment to fetch from GitHub.
+		sleep( 2 );
 
 		// Get update information.
 		$update_plugins = get_site_transient( 'update_plugins' );
