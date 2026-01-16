@@ -12,7 +12,7 @@
             : 'text-gray-500 hover:bg-gray-50 hover:text-gray-700 border-transparent'
         ]"
       >
-        <span class="dashicons dashicons-admin-settings mr-3 text-xl"></span>
+        <Cog6ToothIcon class="w-5 h-5 mr-3" />
         General Settings
       </a>
 
@@ -27,7 +27,7 @@
             : 'text-gray-500 hover:bg-gray-50 hover:text-gray-700 border-transparent'
         ]"
       >
-        <span class="dashicons dashicons-update mr-3 text-xl"></span>
+        <ArrowPathIcon class="w-5 h-5 mr-3" />
         Check Updates
       </a>
 
@@ -51,7 +51,7 @@
               : 'text-gray-500 hover:bg-gray-50 hover:text-gray-700 border-transparent'
           ]"
         >
-          <span :class="['dashicons mr-3 text-xl', getToolIcon(toolId)]"></span>
+          <WrenchScrewdriverIcon class="w-5 h-5 mr-3" />
           {{ getToolTitle(toolId) }}
         </a>
       </template>
@@ -67,6 +67,8 @@
 </template>
 
 <script setup>
+import { Cog6ToothIcon, ArrowPathIcon, WrenchScrewdriverIcon } from '@heroicons/vue/24/outline'
+
 const props = defineProps({
   currentPage: {
     type: String,

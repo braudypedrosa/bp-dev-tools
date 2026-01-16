@@ -2,7 +2,7 @@
   <div>
     <!-- Page Header -->
     <div class="mb-8">
-      <h2 class="text-2xl font-bold text-gray-900 mb-2">General Settings</h2>
+      <h2 class="text-xl font-bold text-gray-900 mb-2">General Settings</h2>
       <p class="text-gray-600">Enable or disable development tools</p>
     </div>
 

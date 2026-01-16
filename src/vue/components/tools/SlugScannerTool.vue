@@ -51,11 +51,11 @@
           class="px-6 py-3 bg-gradient-to-r from-primary-start to-primary-end text-white font-semibold rounded-lg transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed hover:shadow-lg disabled:hover:shadow-none"
         >
           <span v-if="scanning" class="flex items-center gap-2">
-            <span class="dashicons dashicons-update animate-spin"></span>
+            <ArrowPathIcon class="w-5 h-5 animate-spin" />
             Scanning...
           </span>
           <span v-else class="flex items-center gap-2">
-            <span class="dashicons dashicons-search"></span>
+            <MagnifyingGlassIcon class="w-5 h-5" />
             Scan Slugs
           </span>
         </button>
@@ -92,7 +92,7 @@
         <!-- Found Posts -->
         <div v-if="results.found.length > 0">
           <h4 class="text-lg font-semibold text-gray-900 mb-3 flex items-center gap-2">
-            <span class="dashicons dashicons-yes-alt text-green-600"></span>
+            <CheckCircleIcon class="w-6 h-6 text-green-600" />
             Found ({{ results.found.length }})
           </h4>
           <div class="space-y-2 max-h-64 overflow-y-auto">
@@ -106,12 +106,12 @@
                   <p class="font-mono text-sm text-gray-700">{{ item.slug }}</p>
                   <p class="text-sm font-semibold text-gray-900 mt-1">{{ item.title }}</p>
                   <div class="flex items-center gap-3 mt-2 text-xs text-gray-600">
-                    <span class="inline-flex items-center">
-                      <span class="dashicons dashicons-admin-post text-xs mr-1"></span>
+                    <span class="inline-flex items-center gap-1">
+                      <DocumentTextIcon class="w-3 h-3" />
                       {{ item.type }}
                     </span>
-                    <span class="inline-flex items-center">
-                      <span class="dashicons dashicons-flag text-xs mr-1"></span>
+                    <span class="inline-flex items-center gap-1">
+                      <FlagIcon class="w-3 h-3" />
                       {{ item.status }}
                     </span>
                   </div>
@@ -140,7 +140,7 @@
         <!-- Not Found Posts -->
         <div v-if="results.not_found.length > 0">
           <h4 class="text-lg font-semibold text-gray-900 mb-3 flex items-center gap-2">
-            <span class="dashicons dashicons-warning text-red-600"></span>
+            <ExclamationTriangleIcon class="w-6 h-6 text-red-600" />
             Not Found ({{ results.not_found.length }})
           </h4>
           <div class="space-y-2 max-h-64 overflow-y-auto">
@@ -179,7 +179,7 @@
 
         <!-- Empty State -->
         <div v-if="results.found.length === 0 && results.not_found.length === 0 && results.total > 0" class="text-center py-8">
-          <span class="dashicons dashicons-info text-4xl text-gray-300 mb-2"></span>
+          <InformationCircleIcon class="w-16 h-16 text-gray-300 mx-auto mb-2" />
           <p class="text-gray-600">No results to display</p>
         </div>
       </div>
@@ -199,6 +199,15 @@
 <script setup>
 import { ref, onMounted } from 'vue'
 import axios from 'axios'
+import {
+  ArrowPathIcon,
+  MagnifyingGlassIcon,
+  CheckCircleIcon,
+  ExclamationTriangleIcon,
+  DocumentTextIcon,
+  FlagIcon,
+  InformationCircleIcon
+} from '@heroicons/vue/24/outline'
 import Modal from '../Modal.vue'
 import { useToast } from '../../store/tools'
 

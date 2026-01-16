@@ -12,7 +12,7 @@
     <div class="bg-white rounded-xl border border-gray-200 p-6 mb-6">
       <div class="flex items-center justify-between mb-4">
         <h3 class="text-lg font-semibold text-gray-900 flex items-center gap-2">
-          <span class="dashicons dashicons-admin-plugins text-2xl"></span>
+          <CubeIcon class="w-6 h-6 text-blue-600" />
           Current Version
         </h3>
         <span class="px-4 py-2 bg-blue-100 text-blue-800 rounded-full font-semibold">
@@ -33,7 +33,7 @@
             class="font-semibold text-blue-600 hover:text-blue-800 flex items-center gap-1"
           >
             GitHub
-            <span class="dashicons dashicons-external text-sm"></span>
+            <ArrowTopRightOnSquareIcon class="w-4 h-4" />
           </a>
         </div>
         <div class="bg-gray-50 rounded-lg p-4">
@@ -47,7 +47,7 @@
     <div class="bg-white rounded-xl border border-gray-200 p-6 mb-6">
       <div class="flex items-center justify-between mb-4">
         <h3 class="text-lg font-semibold text-gray-900 flex items-center gap-2">
-          <span class="dashicons dashicons-update text-2xl"></span>
+          <ArrowPathIcon class="w-6 h-6 text-blue-600" />
           Update Status
         </h3>
         <button
@@ -55,21 +55,21 @@
           :disabled="checking"
           class="px-4 py-2 bg-gradient-to-r from-primary-start to-primary-end text-white font-semibold rounded-lg transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed hover:shadow-lg disabled:hover:shadow-none flex items-center gap-2"
         >
-          <span v-if="checking" class="dashicons dashicons-update animate-spin"></span>
-          <span v-else class="dashicons dashicons-download"></span>
+          <ArrowPathIcon v-if="checking" class="w-5 h-5 animate-spin" />
+          <ArrowDownTrayIcon v-else class="w-5 h-5" />
           {{ checking ? 'Checking...' : 'Check Now' }}
         </button>
       </div>
 
       <!-- Loading State -->
       <div v-if="checking" class="text-center py-8">
-        <span class="dashicons dashicons-update animate-spin text-4xl text-gray-400"></span>
+        <ArrowPathIcon class="w-16 h-16 animate-spin text-gray-400 mx-auto" />
         <p class="text-gray-600 mt-4">Checking for updates...</p>
       </div>
 
       <!-- Up to Date -->
       <div v-else-if="!updateAvailable" class="text-center py-8">
-        <span class="dashicons dashicons-yes-alt text-6xl text-green-600 mb-4"></span>
+        <CheckCircleIcon class="w-24 h-24 text-green-600 mx-auto mb-4" />
         <h4 class="text-xl font-semibold text-gray-900 mb-2">You're up to date!</h4>
         <p class="text-gray-600">
           You're running the latest version of BP Dev Tools.
@@ -82,7 +82,7 @@
       <!-- Update Available -->
       <div v-else class="bg-yellow-50 border border-yellow-200 rounded-lg p-6">
         <div class="flex items-start gap-4">
-          <span class="dashicons dashicons-warning text-3xl text-yellow-600 flex-shrink-0"></span>
+          <ExclamationTriangleIcon class="w-8 h-8 text-yellow-600 flex-shrink-0" />
           <div class="flex-1">
             <h4 class="text-lg font-semibold text-gray-900 mb-2">
               Update Available: v{{ latestVersion }}
@@ -95,7 +95,7 @@
                 :href="adminUrl + 'plugins.php'"
                 class="px-4 py-2 bg-blue-600 text-white font-semibold rounded-lg hover:bg-blue-700 transition-colors inline-flex items-center gap-2"
               >
-                <span class="dashicons dashicons-update"></span>
+                <ArrowPathIcon class="w-5 h-5" />
                 Go to Plugins Page
               </a>
               <a
@@ -104,7 +104,7 @@
                 target="_blank"
                 class="px-4 py-2 bg-gray-600 text-white font-semibold rounded-lg hover:bg-gray-700 transition-colors inline-flex items-center gap-2"
               >
-                <span class="dashicons dashicons-external"></span>
+                <ArrowTopRightOnSquareIcon class="w-5 h-5" />
                 View Release Notes
               </a>
             </div>
@@ -116,13 +116,13 @@
     <!-- Update Settings Card -->
     <div class="bg-white rounded-xl border border-gray-200 p-6">
       <h3 class="text-lg font-semibold text-gray-900 mb-4 flex items-center gap-2">
-        <span class="dashicons dashicons-admin-settings text-2xl"></span>
+        <Cog6ToothIcon class="w-6 h-6 text-blue-600" />
         Update Settings
       </h3>
       
       <div class="space-y-4">
         <div class="flex items-start gap-3">
-          <span class="dashicons dashicons-info text-blue-600 mt-1"></span>
+          <InformationCircleIcon class="w-5 h-5 text-blue-600 mt-1 flex-shrink-0" />
           <div>
             <p class="font-semibold text-gray-900 mb-1">Automatic Update Checks</p>
             <p class="text-sm text-gray-600">
@@ -132,7 +132,7 @@
         </div>
         
         <div class="flex items-start gap-3">
-          <span class="dashicons dashicons-shield text-green-600 mt-1"></span>
+          <ShieldCheckIcon class="w-5 h-5 text-green-600 mt-1 flex-shrink-0" />
           <div>
             <p class="font-semibold text-gray-900 mb-1">GitHub Releases</p>
             <p class="text-sm text-gray-600">
@@ -142,7 +142,7 @@
         </div>
 
         <div class="flex items-start gap-3">
-          <span class="dashicons dashicons-backup text-purple-600 mt-1"></span>
+          <ArrowDownTrayIcon class="w-5 h-5 text-purple-600 mt-1 flex-shrink-0" />
           <div>
             <p class="font-semibold text-gray-900 mb-1">Safe Updates</p>
             <p class="text-sm text-gray-600">
@@ -157,6 +157,17 @@
 
 <script setup>
 import { ref, onMounted } from 'vue'
+import {
+  CubeIcon,
+  ArrowPathIcon,
+  ArrowDownTrayIcon,
+  CheckCircleIcon,
+  ExclamationTriangleIcon,
+  ArrowTopRightOnSquareIcon,
+  Cog6ToothIcon,
+  InformationCircleIcon,
+  ShieldCheckIcon
+} from '@heroicons/vue/24/outline'
 
 // State
 const currentVersion = ref(window.bpDevToolsAdmin?.version || '1.0.0')

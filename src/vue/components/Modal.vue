@@ -24,7 +24,7 @@
               class="text-white hover:text-gray-200 transition-colors"
               aria-label="Close"
             >
-              <span class="dashicons dashicons-no-alt text-2xl"></span>
+              <XMarkIcon class="w-6 h-6" />
             </button>
           </div>
 
@@ -44,6 +44,8 @@
 </template>
 
 <script setup>
+import { XMarkIcon } from '@heroicons/vue/24/outline'
+
 defineProps({
   modelValue: {
     type: Boolean,
