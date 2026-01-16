@@ -120,14 +120,14 @@
                   <a
                     :href="item.edit_url"
                     target="_blank"
-                    class="px-3 py-1 bg-blue-600 text-white text-xs rounded hover:bg-blue-700 transition-colors"
+                    class="px-3 py-1 bg-blue-600 text-white text-xs rounded hover:bg-blue-700 hover:text-white active:text-white transition-colors"
                   >
                     Edit
                   </a>
                   <a
                     :href="item.view_url"
                     target="_blank"
-                    class="px-3 py-1 bg-gray-600 text-white text-xs rounded hover:bg-gray-700 transition-colors"
+                    class="px-3 py-1 bg-gray-600 text-white text-xs rounded hover:bg-gray-700 hover:text-white active:text-white transition-colors"
                   >
                     View
                   </a>
