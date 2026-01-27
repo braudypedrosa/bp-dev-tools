@@ -71,6 +71,12 @@ class BP_Dev_Tools_Admin {
 				'description' => __( 'Check if URL slugs exist in your WordPress site. Paste a list of URLs to see which posts are found and which are missing, then create posts for missing slugs with one click.', 'bp-dev-tools' ),
 				'icon'        => 'dashicons-search',
 			),
+			'bulk-create-post' => array(
+				'id'          => 'bulk-create-post',
+				'title'       => __( 'Bulk Create Post', 'bp-dev-tools' ),
+				'description' => __( 'Create multiple posts or pages at once by pasting one title per line, then generate them in bulk.', 'bp-dev-tools' ),
+				'icon'        => 'dashicons-media-text',
+			),
 		);
 
 		/**

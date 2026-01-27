@@ -17,7 +17,9 @@
         <component 
           :is="currentView" 
           :tools="tools"
+        :current-page="currentPage"
           @tool-toggled="handleToolToggle"
+        @configure="handleConfigure"
         />
       </div>
     </div>
@@ -78,11 +80,30 @@ const handleNavigation = (page) => {
 // Handle tool toggle
 const handleToolToggle = async (toolId, enabled) => {
   console.log('⚡ App.vue handleToolToggle:', { toolId, enabled, type: typeof enabled })
-  await store.toggleTool(toolId, enabled)
-  
+  const result = await store.toggleTool(toolId, enabled)
+
   // If disabling the currently viewed tool, navigate back to general settings
   if (!enabled && currentPage.value === toolId) {
     handleNavigation('general')
+  }
+
+  return result
+}
+
+const handleConfigure = async (tool) => {
+  if (tool.enabled) {
+    handleNavigation(tool.id)
+    return
+  }
+
+  const shouldEnable = window.confirm('This tool is currently disabled. Enable it first?')
+  if (!shouldEnable) {
+    return
+  }
+
+  const enabled = await handleToolToggle(tool.id, true)
+  if (enabled) {
+    handleNavigation(tool.id)
   }
 }
 </script>

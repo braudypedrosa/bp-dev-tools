@@ -46,21 +46,24 @@
 
 <script setup>
 import { computed, markRaw } from 'vue'
-import { useRoute } from '@/composables/useRoute'
 
 // Import tool-specific components
 import SlugScannerTool from '@components/tools/SlugScannerTool.vue'
+import BulkCreatePostTool from '@components/tools/BulkCreatePostTool.vue'
 
 const props = defineProps({
   tools: {
     type: Array,
     default: () => []
+  },
+  currentPage: {
+    type: String,
+    default: 'general'
   }
 })
 
-// Get current tool from URL/route
-const route = useRoute()
-const currentToolId = computed(() => route.tab.value)
+// Get current tool from parent (App.vue)
+const currentToolId = computed(() => props.currentPage)
 
 // Find current tool data
 const currentTool = computed(() => {
@@ -70,6 +73,7 @@ const currentTool = computed(() => {
 // Map tool IDs to their Vue components
 const toolComponents = {
   'slug-scanner': markRaw(SlugScannerTool),
+  'bulk-create-post': markRaw(BulkCreatePostTool),
   // Add more tool components here as they're created
 }
 

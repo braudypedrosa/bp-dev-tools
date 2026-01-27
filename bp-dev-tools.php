@@ -269,6 +269,7 @@ final class BP_Dev_Tools {
 			
 			// Load tool classes.
 			require_once BP_DEV_TOOLS_INCLUDES_DIR . 'tools/class-slug-scanner.php';
+			require_once BP_DEV_TOOLS_INCLUDES_DIR . 'tools/class-bulk-create-posts.php';
 		}
 
 		// Frontend includes - only loaded on public-facing pages.
@@ -321,6 +322,7 @@ final class BP_Dev_Tools {
 			
 			// Initialize tools.
 			new BP_Dev_Tools_Slug_Scanner();
+			new BP_Dev_Tools_Bulk_Create_Posts();
 		}
 
 		// Initialize frontend if not in admin area.

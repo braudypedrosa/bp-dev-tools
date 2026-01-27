@@ -13,7 +13,7 @@
         :key="tool.id"
         :tool="tool"
         @toggle="handleToggle"
-        @navigate="$emit('navigate', $event)"
+        @configure="handleConfigure"
       />
     </div>
 
@@ -39,10 +39,14 @@ defineProps({
   }
 })
 
-const emit = defineEmits(['tool-toggled', 'navigate'])
+const emit = defineEmits(['tool-toggled', 'configure'])
 
 const handleToggle = (toolId, enabled) => {
   console.log('📋 GeneralSettings handleToggle:', { toolId, enabled })
   emit('tool-toggled', toolId, enabled)
+}
+
+const handleConfigure = (tool) => {
+  emit('configure', tool)
 }
 </script>

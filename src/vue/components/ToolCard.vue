@@ -28,14 +28,11 @@
         />
       </div>
 
-      <!-- Configure Link (when enabled) -->
-      <div
-        v-if="tool.enabled"
-        class="pt-4 border-t border-blue-200/30"
-      >
+      <!-- Configure Link -->
+      <div class="pt-4 border-t border-blue-200/30">
         <a
           href="#"
-          @click.prevent="$emit('navigate', tool.id)"
+          @click.prevent="handleConfigure"
           class="inline-flex items-center text-sm font-semibold text-accent hover:text-accent/80 transition-colors group"
         >
           Configure Tool
@@ -57,9 +54,13 @@ const props = defineProps({
   }
 })
 
-const emit = defineEmits(['toggle', 'navigate'])
+const emit = defineEmits(['toggle', 'configure'])
 
 const loading = ref(false)
+
+const handleConfigure = () => {
+  emit('configure', props.tool)
+}
 
 const handleToggle = async (enabled) => {
   console.log('🎯 ToolCard handleToggle:', { toolId: props.tool.id, enabled, type: typeof enabled })
